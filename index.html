@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex — Detailing wnętrz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --panel:#141414;
+    --white:#f6f6f4;
+    --gray:#8f8f8a;
+    --line:#2a2a28;
+    --line-light:#dcdcd7;
+    --display:'Anton', sans-serif;
+    --mono:'JetBrains Mono', monospace;
+    --body:'Inter', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--black);
+    color:var(--white);
+    font-family:var(--body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+  ::selection{ background:var(--white); color:var(--black); }
+
+  :focus-visible{
+    outline:2px solid var(--white);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(10,10,10,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:72px;
+  }
+  .logo{
+    font-family:var(--display);
+    font-size:22px;
+    letter-spacing:2px;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+  }
+  .logo-img{
+    height:34px;
+    width:auto;
+    display:block;
+  }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .nav-links a{
+    text-decoration:none;
+    font-size:13px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--gray);
+    transition:color .2s;
+    padding:4px 0;
+    border-bottom:1px solid transparent;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{
+    color:var(--white);
+    border-bottom-color:var(--white);
+  }
+  .burger{
+    display:none;
+    background:none;
+    border:1px solid var(--line);
+    width:40px;height:40px;
+    color:var(--white);
+    font-size:18px;
+    cursor:pointer;
+  }
+  @media (max-width:760px){
+    .nav-links{
+      position:absolute;
+      top:72px; left:0; right:0;
+      background:var(--black);
+      border-bottom:1px solid var(--line);
+      flex-direction:column;
+      gap:0;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .25s ease;
+    }
+    .nav-links.open{ max-height:260px; }
+    .nav-links a{
+      display:block;
+      padding:16px 24px;
+      border-bottom:1px solid var(--line);
+    }
+    .burger{ display:block; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:88vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .vortex-bg{
+    position:absolute;
+    top:50%; left:50%;
+    width:900px; height:900px;
+    transform:translate(-50%,-50%);
+    background:conic-gradient(from 0deg,
+      #1a1a1a, #050505 10%, #2b2b2b 20%, #050505 35%,
+      #232323 50%, #050505 65%, #2b2b2b 80%, #050505 92%, #1a1a1a);
+    border-radius:50%;
+    opacity:0.55;
+    filter:blur(2px);
+    animation:spin 40s linear infinite;
+  }
+  @keyframes spin{ to{ transform:translate(-50%,-50%) rotate(360deg); } }
+  .hero::after{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(circle at center, rgba(10,10,10,0) 0%, var(--black) 72%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    max-width:680px;
+    padding:0 24px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:4px;
+    color:var(--gray);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  h1.brand{
+    font-family:var(--display);
+    font-size:clamp(56px, 14vw, 120px);
+    line-height:0.9;
+    letter-spacing:2px;
+    margin:0 0 20px;
+  }
+  .tagline{
+    font-size:17px;
+    color:#cfcfca;
+    max-width:480px;
+    margin:0 auto 36px;
+  }
+  .cta{
+    display:inline-block;
+    border:1px solid var(--white);
+    color:var(--white);
+    text-decoration:none;
+    padding:14px 32px;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    transition:background .2s, color .2s;
+  }
+  .cta:hover, .cta:focus-visible{
+    background:var(--white);
+    color:var(--black);
+  }
+
+  .hero-logo{
+    display:block;
+    width:min(85vw, 480px);
+    height:auto;
+    margin:0 auto 28px;
+  }
+  .process-strip{
+    margin-top:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gray);
+    flex-wrap:wrap;
+  }
+  .process-strip span{
+    position:relative;
+    padding-right:18px;
+  }
+  .process-strip span:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    right:0; top:50%;
+    width:1px; height:12px;
+    background:var(--line);
+    transform:translateY(-50%);
+  }
+  @media (max-width:500px){
+    .process-strip{ gap:14px; margin-top:40px; }
+    .process-strip span{ padding-right:14px; }
+  }
+
+  /* ---------- SECTION GENERIC ---------- */
+  section{
+    padding:110px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .section-head{
+    margin-bottom:56px;
+  }
+  h2{
+    font-family:var(--display);
+    font-size:clamp(34px, 6vw, 56px);
+    letter-spacing:1px;
+    margin:0;
+    text-transform:uppercase;
+  }
+
+  /* ---------- O MNIE ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:60px;
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .about-grid{ grid-template-columns:1fr; gap:32px; }
+  }
+  .about-text p{
+    font-size:16px;
+    color:#d6d6d2;
+    max-width:520px;
+  }
+  .about-text p + p{ margin-top:18px; }
+
+  /* ---------- CENNIK ---------- */
+  .packages{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:60px;
+  }
+  @media (max-width:760px){
+    .packages{ grid-template-columns:1fr; }
+  }
+  .package{
+    background:var(--black);
+    padding:40px;
+  }
+  .package.premium{
+    background:var(--white);
+    color:var(--black);
+  }
+  .package-name{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gray);
+  }
+  .package.premium .package-name{ color:#555; }
+  .package-title{
+    font-family:var(--display);
+    font-size:28px;
+    letter-spacing:1px;
+    margin:8px 0 4px;
+    text-transform:uppercase;
+  }
+  .package-price{
+    font-family:var(--mono);
+    font-size:32px;
+    margin:16px 0 28px;
+  }
+  .package ul{
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .package li{
+    padding:12px 0;
+    border-top:1px solid var(--line);
+    font-size:14.5px;
+  }
+  .package.premium li{ border-top:1px solid #d6d6d2; }
+  .package li:first-of-type{ border-top:none; }
+
+  /* ---------- GALERIA / SLIDER ---------- */
+  .gallery-intro{
+    color:var(--gray);
+    font-size:15px;
+    max-width:520px;
+    margin:-30px 0 50px;
+  }
+  .ba-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+  }
+  @media (max-width:700px){
+    .ba-grid{ grid-template-columns:1fr; }
+  }
+  .ba-item figcaption{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--gray);
+    margin-bottom:14px;
+  }
+  .ba-slider{
+    position:relative;
+    width:100%;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border:1px solid var(--line);
+    user-select:none;
+    touch-action:pan-y;
+  }
+  .ba-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    pointer-events:none;
+  }
+  .ba-after-wrap{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    width:50%;
+  }
+  .ba-after-wrap .ba-img{
+    width:200%;
+  }
+  .ba-line{
+    position:absolute;
+    top:0; bottom:0;
+    left:50%;
+    width:1px;
+    background:var(--white);
+    pointer-events:none;
+  }
+  .ba-handle{
+    position:absolute;
+    top:50%; left:50%;
+    width:44px; height:44px;
+    transform:translate(-50%,-50%);
+    background:var(--white);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:ew-resize;
+    box-shadow:0 0 0 1px var(--black);
+  }
+  .ba-handle svg{ width:18px; height:18px; }
+  .ba-range{
+    position:absolute;
+    inset:0;
+    width:100%; height:100%;
+    opacity:0;
+    cursor:ew-resize;
+    margin:0;
+  }
+  .ba-tag{
+    position:absolute;
+    top:14px;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background:rgba(10,10,10,0.6);
+    padding:5px 10px;
+    z-index:3;
+  }
+  .ba-tag.left{ left:14px; }
+  .ba-tag.right{ right:14px; }
+
+  /* ---------- KONTAKT ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
+  }
+  @media (max-width:760px){
+    .contact-grid{ grid-template-columns:1fr; gap:48px; }
+  }
+  .contact-list{
+    list-style:none;
+    margin:0 0 40px; padding:0;
+  }
+  .contact-list li{
+    padding:20px 0;
+    border-top:1px solid var(--line);
+  }
+  .contact-list li:last-child{ border-bottom:1px solid var(--line); }
+  .contact-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gray);
+    display:block;
+    margin-bottom:6px;
+  }
+  .contact-value{
+    font-size:19px;
+    text-decoration:none;
+  }
+  a.contact-value:hover, a.contact-value:focus-visible{ text-decoration:underline; }
+
+  .social-row{
+    display:flex;
+    gap:14px;
+  }
+  .social-btn{
+    width:48px; height:48px;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:var(--white);
+    transition:background .2s, color .2s;
+  }
+  .social-btn:hover, .social-btn:focus-visible{
+    background:var(--white);
+    color:var(--black);
+  }
+  .social-btn svg{ width:20px; height:20px; }
+
+  .map-wrap{
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .map-wrap iframe{
+    width:100%;
+    height:100%;
+    min-height:320px;
+    display:block;
+    border:0;
+    filter:grayscale(1) invert(0.92) contrast(0.9);
+  }
+
+  footer{
+    padding:36px 0;
+    text-align:center;
+    color:var(--gray);
+    font-size:12px;
+    letter-spacing:1px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a href="#top" class="logo"><img src="images/wordmark.png" alt="Vortex" class="logo-img"></a>
+    <button class="burger" id="burgerBtn" aria-label="Otwórz menu" aria-expanded="false">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#o-mnie">O mnie</a></li>
+      <li><a href="#cennik">Cennik</a></li>
+      <li><a href="#galeria">Galeria</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="vortex-bg" aria-hidden="true"></div>
+  <div class="hero-content">
+    <img src="images/logo.png" alt="Vortex Detailing" class="hero-logo">
+    <p class="tagline">Dokładne czyszczenie i konserwacja wnętrza Twojego samochodu — od odkurzenia po pranie tapicerki. Bez kompromisów w szczegółach.</p>
+    <a href="#kontakt" class="cta">Umów wizytę</a>
+    <div class="process-strip">
+      <span>Ocena stanu</span>
+      <span>Czyszczenie i pranie</span>
+      <span>Kontrola jakości</span>
+    </div>
+  </div>
+</section>
+
+<section id="o-mnie">
+  <div class="wrap about-grid">
+    <div>
+      <h2>O mnie</h2>
+    </div>
+    <div class="about-text">
+      <p>Zajmuję się detailingiem wnętrz samochodowych — dokładnie i bez pośpiechu. Każde auto trafiające do mnie przechodzi pełną ocenę stanu, a dopiero potem dobieram zakres prac.</p>
+      <p>Stawiam na precyzję w miejscach, które łatwo pominąć: szczeliny, podsufitka, trudno dostępne zakamarki. Efekt ma być widoczny, a nie tylko obiecywany.</p>
+    </div>
+  </div>
+</section>
+
+<section id="cennik">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Cennik</h2>
+    </div>
+
+    <div class="packages">
+      <div class="package">
+        <span class="package-name">Pakiet</span>
+        <div class="package-title">Standard</div>
+        <div class="package-price">od 80 zł</div>
+        <ul>
+          <li>Czyszczenie i konserwacja plastików</li>
+          <li>Dokładne odkurzanie całego wnętrza z wybiciem piasku</li>
+          <li>Mycie szyb</li>
+        </ul>
+      </div>
+      <div class="package premium">
+        <span class="package-name">Pakiet</span>
+        <div class="package-title">Premium</div>
+        <div class="package-price">od 200 zł</div>
+        <ul>
+          <li>Czyszczenie i konserwacja plastików</li>
+          <li>Dokładne odkurzanie całego wnętrza z wybiciem piasku</li>
+          <li>Mycie szyb</li>
+          <li>Czyszczenie trudno dostępnych miejsc</li>
+          <li>Czyszczenie podsufitki</li>
+          <li>Pranie tapicerki materiałowej / czyszczenie tapicerki skórzanej</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Przed / Po</h2>
+    </div>
+    <p class="gallery-intro">Przesuń suwak, aby porównać stan przed i po detailingu.</p>
+
+    <div class="ba-grid">
+
+      <figure class="ba-item">
+        <figcaption>Tylna kanapa</figcaption>
+        <div class="ba-slider" data-ba>
+          <img class="ba-img" src="images/kanapa-po.jpg" alt="Tylna kanapa po detailingu">
+          <div class="ba-after-wrap">
+            <img class="ba-img" src="images/kanapa-przed.jpg" alt="Tylna kanapa przed detailingiem">
+          </div>
+          <span class="ba-tag left">Przed</span>
+          <span class="ba-tag right">Po</span>
+          <div class="ba-line"></div>
+          <div class="ba-handle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="Suwak porównania przed i po — tylna kanapa">
+        </div>
+      </figure>
+
+      <figure class="ba-item">
+        <figcaption>Fotel kierowcy</figcaption>
+        <div class="ba-slider" data-ba>
+          <img class="ba-img" src="images/fotel-po.jpg" alt="Fotel kierowcy po detailingu">
+          <div class="ba-after-wrap">
+            <img class="ba-img" src="images/fotel-przed.jpg" alt="Fotel kierowcy przed detailingiem">
+          </div>
+          <span class="ba-tag left">Przed</span>
+          <span class="ba-tag right">Po</span>
+          <div class="ba-line"></div>
+          <div class="ba-handle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="Suwak porównania przed i po — fotel kierowcy">
+        </div>
+      </figure>
+
+      <figure class="ba-item">
+        <figcaption>Bagażnik</figcaption>
+        <div class="ba-slider" data-ba>
+          <img class="ba-img" src="images/bagaznik-po.jpg" alt="Bagażnik po detailingu">
+          <div class="ba-after-wrap">
+            <img class="ba-img" src="images/bagaznik-przed.jpg" alt="Bagażnik przed detailingiem">
+          </div>
+          <span class="ba-tag left">Przed</span>
+          <span class="ba-tag right">Po</span>
+          <div class="ba-line"></div>
+          <div class="ba-handle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="Suwak porównania przed i po — bagażnik">
+        </div>
+      </figure>
+
+      <figure class="ba-item">
+        <figcaption>Plastiki drzwi</figcaption>
+        <div class="ba-slider" data-ba>
+          <img class="ba-img" src="images/drzwi-po.jpg" alt="Plastik drzwi po detailingu">
+          <div class="ba-after-wrap">
+            <img class="ba-img" src="images/drzwi-przed.jpg" alt="Plastik drzwi przed detailingiem">
+          </div>
+          <span class="ba-tag left">Przed</span>
+          <span class="ba-tag right">Po</span>
+          <div class="ba-line"></div>
+          <div class="ba-handle" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" stroke-width="2"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="Suwak porównania przed i po — plastiki drzwi">
+        </div>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Kontakt</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div>
+        <ul class="contact-list">
+          <li>
+            <span class="contact-label">Numer</span>
+            <a href="tel:+48794793133" class="contact-value">+48 794 793 133</a>
+          </li>
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:vortexdetailing.jaslo@gmail.com" class="contact-value">vortexdetailing.jaslo@gmail.com</a>
+          </li>
+          <li>
+            <span class="contact-label">Adres</span>
+            <span class="contact-value">Kaczorowy 5A, 38-200 Jasło</span>
+          </li>
+        </ul>
+
+        <div class="social-row">
+          <a href="#" class="social-btn" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 3c.5 2.5 2.2 4.2 4.5 4.5"/></svg>
+          </a>
+          <a href="#" class="social-btn" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 9h3V5.5h-3A3.5 3.5 0 0 0 10.5 9v2H8v3.5h2.5V21H14v-6.5h2.7l.5-3.5H14V9c0-.3.2-.5.5-.5z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=Kaczorowy%205A%2C%2038-200%20Jas%C5%82o&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa — Kaczorowy 5A, 38-200 Jasło">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  VORTEX — DETAILING WNĘTRZ · JASŁO
+</footer>
+
+<script>
+  // mobile nav toggle
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    burger.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // before/after sliders
+  document.querySelectorAll('[data-ba]').forEach(container => {
+    const afterWrap = container.querySelector('.ba-after-wrap');
+    const afterImg = afterWrap.querySelector('.ba-img');
+    const line = container.querySelector('.ba-line');
+    const handle = container.querySelector('.ba-handle');
+    const range = container.querySelector('.ba-range');
+
+    function update(val){
+      const v = Math.min(Math.max(Number(val), 0.0001), 100);
+      afterWrap.style.width = v + '%';
+      if (afterImg) afterImg.style.width = (10000 / v) + '%';
+      line.style.left = v + '%';
+      handle.style.left = v + '%';
+    }
+    update(range.value);
+    range.addEventListener('input', e => update(e.target.value));
+  });
+</script>
+
+</body>
+</html>
